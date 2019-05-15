@@ -4,7 +4,9 @@ import './App.css'
 import Bills from './Bills'
 import Bill from './Bill'
 import Members from './Members'
+import Member from './Member'
 import Posts from './Posts'
+import Post from './Post'
 import Nav from './Navigation'
 
 class App extends Component {
@@ -17,6 +19,8 @@ class App extends Component {
           <Route path="/members" component={Members} />
           <Route path="/posts" component={Posts} />
           <Route path="/bill/:id" component={Bill} />
+          <Route path="/member/:id" component={Member} />
+          <Route path="/post/:id" component={Post} />
         </Switch>
       </div>
     )

@@ -1,28 +1,44 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import ReactHtmlParser from 'react-html-parser'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
+const ALL_MEMBERS_QUERY = gql`
+  query ALL_MEMBERS_QUERY($first: Int) {
+    allMembers(first: $first) {
+      nodes {
+        id
+        name
+        bio
+        url
+      }
+    }
+  }
+`
 class Members extends Component {
-  state = {
-    members: []
-  }
-
-  componentDidMount() {
-    fetch('http://localhost:3001/api/v1/members')
-      .then(response => response.json())
-      .then(members => this.setState({ members: members.data }))
-  }
-
   render() {
     return (
-      <div>
-        <h2>Members</h2>
-        <ul>
-          {this.state.members.map(member => (
-            <li key={member.id}>
-              ID: {member.id}
-              Last name {member.attributes.summary}
-            </li>
-          ))}
-        </ul>
+      <div className="container">
+        <Query query={ALL_MEMBERS_QUERY} variables={{ first: 30 }}>
+          {({ loading, error, data }) => {
+            if (loading) return <div>Fetching</div>
+            if (error) return <div>Error</div>
+
+            return data.allMembers.nodes.map(({ id, name, bio, url }) => (
+              <div key={id}>
+                <div className="card mt-3">
+                  <div className="card-body">
+                    <h5 className="card-title">{name}</h5>
+                    <p className="card-text">{ReactHtmlParser(bio)}</p>
+                    <p className="card-text">{url}</p>
+                    <Link to={`/member/${id}`}>View</Link>
+                  </div>
+                </div>
+              </div>
+            ))
+          }}
+        </Query>
       </div>
     )
   }

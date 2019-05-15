@@ -16,31 +16,32 @@ const BILL_QUERY = gql`
 
 class Bill extends Component {
   render() {
-    console.log(this.props.match.params)
     return (
-      <Query
-        query={BILL_QUERY}
-        variables={{ billId: this.props.match.params.id }}
-      >
-        {({ loading, error, data }) => {
-          if (loading) return <div>Fetching</div>
-          if (error) return <div>Error</div>
+      <div className="container">
+        <Query
+          query={BILL_QUERY}
+          variables={{ billId: this.props.match.params.id }}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return <div>Fetching</div>
+            if (error) return <div>Error</div>
 
-          return (
-            <div className="container">
-              <div className="card mt-3" key={data.bill.id}>
-                <div className="card-body">
-                  <h5 className="card-title">{data.bill.number}</h5>
-                  <p className="card-text">{data.bill.title}</p>
-                  <p className="card-text">
-                    {ReactHtmlParser(data.bill.breakdown)}
-                  </p>
+            return (
+              <div className="container">
+                <div className="card mt-3">
+                  <div className="card-body">
+                    <h5 className="card-title">{data.bill.number}</h5>
+                    <p className="card-text">{data.bill.title}</p>
+                    <p className="card-text">
+                      {ReactHtmlParser(data.bill.breakdown)}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        }}
-      </Query>
+            )
+          }}
+        </Query>
+      </div>
     )
   }
 }

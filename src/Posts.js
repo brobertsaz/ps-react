@@ -30,7 +30,11 @@ class Posts extends Component {
                 <div className="card mt-3">
                   <div className="card-body">
                     <h5 className="card-title">{title}</h5>
-                    <p className="card-text">{url}</p>
+                    <p className="card-text">
+                      <a href={url} target="_blank">
+                        {url}
+                      </a>
+                    </p>
                     <p className="card-text">{source}</p>
                     <Link to={`/post/${id}`}>View</Link>
                   </div>

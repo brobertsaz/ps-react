@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import './App.css'
 import Bills from './Bills'
 import Bill from './Bill'
@@ -16,14 +16,14 @@ class App extends Component {
     email: '',
     password: '',
     name: '',
-    loggedIn: false
+    loggedIn: null
   }
 
   setLoggedIn = () => {
     this.setState({
       loggedIn: true
     })
-    this.props.history.push('/')
+    this.props.history.push('/bills')
   }
 
   updateLogout = () => {
@@ -48,26 +48,52 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <Nav state={this.state} logoutHandler={this.updateLogout} />
         <Switch>
-          <Route exact path="/" component={Bills} />
-          <Route path="/members" component={Members} />
-          <Route path="/posts" component={Posts} />
-          <Route path="/bill/:id" component={Bill} />
-          <Route path="/member/:id" component={Member} />
-          <Route path="/post/:id" component={Post} />
           <Route
-            path="/register"
+            exact
+            path='/'
+            isLoggedIn={this.state.loggedIn}
+            component={Bills}
+          />
+          <Route
+            path='/members'
+            isLoggedIn={this.state.loggedIn}
+            component={Members}
+          />
+          <Route
+            path='/posts'
+            isLoggedIn={this.state.loggedIn}
+            component={Posts}
+          />
+          <Route
+            path='/bill/:id'
+            isLoggedIn={this.state.loggedIn}
+            component={Bill}
+          />
+          <Route
+            path='/member/:id'
+            isLoggedIn={this.state.loggedIn}
+            component={Member}
+          />
+          <Route
+            path='/post/:id'
+            isLoggedIn={this.state.loggedIn}
+            component={Post}
+          />
+          <Route
+            path='/register'
             render={() => (
               <Register
                 parentState={this.state}
+                changeHandler={this.handleChange}
                 registerHandler={this.setLoggedIn}
               />
             )}
           />
           <Route
-            path="/login"
+            path='/login'
             render={() => (
               <Login
                 parentState={this.state}
@@ -77,7 +103,6 @@ class App extends Component {
             )}
           />
         </Switch>
-        }
       </div>
     )
   }

@@ -9,7 +9,15 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import * as serviceWorker from './serviceWorker'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql'
+  uri: 'http://localhost:3001/graphql',
+  request: async operation => {
+    const token = localStorage.getItem('auth-token')
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    })
+  }
 })
 
 ReactDOM.render(
